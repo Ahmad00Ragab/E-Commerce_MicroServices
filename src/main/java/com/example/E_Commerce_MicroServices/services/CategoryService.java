@@ -1,6 +1,7 @@
 package com.example.E_Commerce_MicroServices.services;
 
 import com.example.E_Commerce_MicroServices.models.Category;
+import com.example.E_Commerce_MicroServices.models.CategoryProjection;
 import com.example.E_Commerce_MicroServices.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,8 @@ public class CategoryService {
         return categoryRepository.save(category);
     }
 
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+    public List<CategoryProjection> getAllCategories() {
+        return categoryRepository.findAllBy();
     }
 
     public Category getCategoryById(Long id) {
