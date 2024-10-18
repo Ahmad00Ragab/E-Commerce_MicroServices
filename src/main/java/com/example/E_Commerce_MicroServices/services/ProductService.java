@@ -1,6 +1,6 @@
 package com.example.E_Commerce_MicroServices.services;
 
-import com.example.E_Commerce_MicroServices.exceptions.ProductNotFoundException;
+import com.example.E_Commerce_MicroServices.system.exceptions.ProductNotFoundException;
 import com.example.E_Commerce_MicroServices.models.Product;
 import com.example.E_Commerce_MicroServices.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
