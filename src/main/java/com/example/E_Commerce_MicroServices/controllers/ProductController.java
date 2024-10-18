@@ -54,5 +54,10 @@ public class ProductController {
         return productService.getFilteredProducts(name, category, minPrice, maxPrice);
     }
 
+    @GetMapping("/search")
+    public List<Product> searchProductsByName(@RequestParam String name) {
+        return productService.getProductsByName(name);
+    }
+
 
 }

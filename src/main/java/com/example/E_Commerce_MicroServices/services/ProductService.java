@@ -52,6 +52,10 @@ public class ProductService {
     public List<Product> getFilteredProducts(String name, String category, BigDecimal minPrice, BigDecimal maxPrice) {
         return productRepository.findAll(ProductSpecification.filterBy(name, category, minPrice, maxPrice));
     }
+
+    public List<Product> getProductsByName(String name) {
+        return productRepository.findByNameContainingIgnoreCase(name);
+    }
 }
 
 

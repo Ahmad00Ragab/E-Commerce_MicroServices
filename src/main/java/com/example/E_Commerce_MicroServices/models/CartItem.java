@@ -44,6 +44,13 @@ public class CartItem {
         this.cartId = new CartKey(user.getId(), product.getId());
     }
 
+    public CartItem(long userId, Long productId, int quantity) {
+        this.user.setId(userId);
+        this.product.setId(productId);
+        this.quantity = quantity;
+        this.cartId = new CartKey(user.getId(), product.getId());
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(cartId, quantity);

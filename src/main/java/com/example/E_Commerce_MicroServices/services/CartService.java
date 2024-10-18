@@ -3,6 +3,7 @@ package com.example.E_Commerce_MicroServices.services;
 import com.example.E_Commerce_MicroServices.models.CartItem;
 import com.example.E_Commerce_MicroServices.models.CartKey;
 import com.example.E_Commerce_MicroServices.models.Product;
+import com.example.E_Commerce_MicroServices.models.User;
 import com.example.E_Commerce_MicroServices.repositories.CartItemRepository;
 import com.example.E_Commerce_MicroServices.repositories.ProductRepository;
 import com.example.E_Commerce_MicroServices.repositories.UserRepository;
@@ -50,7 +51,7 @@ public class CartService {
             throw new ObjectNotFoundException("Product", productId);
         }
 
-        Optional<CartItem> existingCartItem = cartItemRepository.findByUserId(userId).stream().filter(cartItem -> cartItem.getProductId().equals(productId)).findFirst();
+        Optional<CartItem> existingCartItem = cartItemRepository.findByUserId(userId).stream().filter(cartItem -> cartItem.getProduct().getId().equals(productId)).findFirst();
 
         if(existingCartItem.isPresent()) {
             CartItem cartItem = existingCartItem.get();
@@ -82,7 +83,7 @@ public class CartService {
     public void removeItem(Long userId, Long productId) {
         List<CartItem> cart = cartItemRepository.findByUserId(userId);
         for (CartItem item : cart) {
-            if (item.getProductId().equals(productId)) {
+            if (item.getProduct().getId().equals(productId)) {
                 cartItemRepository.deleteById(new CartKey(userId, productId));
                 break;
             }

@@ -1,6 +1,7 @@
 package com.example.E_Commerce_MicroServices.models;
 
 import com.example.E_Commerce_MicroServices.repositories.CategoryRepository;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,10 +45,12 @@ public class Product {
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     @ToString.Exclude
+    @JsonIgnore
     private Set<CartItem> cart;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false )
+    @JsonIgnore
     private Category category;
 
     @Column(name = "date_created", nullable = true)
