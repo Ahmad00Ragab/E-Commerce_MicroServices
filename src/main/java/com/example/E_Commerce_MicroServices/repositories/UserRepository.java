@@ -14,7 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByEmail(String email);
 
-    @Query("SELECT u.interests FROM User u WHERE u.id = :userId")
+    @Query("SELECT u.categories FROM User u WHERE u.id = :userId")
     Set<Category> findInterestsByUserId(@Param("userId") Long userId);
 
     boolean existsByUsername(String username);
