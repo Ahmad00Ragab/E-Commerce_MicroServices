@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "order_items")
 @Getter
@@ -21,6 +23,7 @@ public class OrderItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
+    @JsonIgnoreProperties("orderItems") // Prevent recursion
     private Order order;
 
     // @ManyToOne(fetch = FetchType.LAZY)

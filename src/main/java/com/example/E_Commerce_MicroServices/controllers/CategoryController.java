@@ -1,6 +1,7 @@
 package com.example.E_Commerce_MicroServices.controllers;
 
 import com.example.E_Commerce_MicroServices.models.Category;
+import com.example.E_Commerce_MicroServices.models.CategoryProjection;
 import com.example.E_Commerce_MicroServices.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Category>> getAllCategories() {
+    public ResponseEntity<List<CategoryProjection>> getAllCategories() {
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
 

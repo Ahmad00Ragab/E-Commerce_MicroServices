@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "orders")
 @Getter
@@ -36,6 +38,7 @@ public class Order {
     // @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     // @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY) /* when adding the order, add with it the order items, in order_items table */
+    @JsonIgnoreProperties("order")
     private Set<OrderItem> orderItems = new HashSet<>();
 
     public Order(User user, BigDecimal totalPrice, LocalDateTime dateCreated) {
