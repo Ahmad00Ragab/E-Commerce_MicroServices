@@ -3,9 +3,11 @@ package com.example.E_Commerce_MicroServices.services;
 import com.example.E_Commerce_MicroServices.exceptions.ProductNotFoundException;
 import com.example.E_Commerce_MicroServices.models.Product;
 import com.example.E_Commerce_MicroServices.repositories.ProductRepository;
+import com.example.E_Commerce_MicroServices.specification.ProductSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,6 +47,10 @@ public class ProductService {
                     existingProduct.setPrice(updatedProduct.getPrice());
                     return productRepository.save(existingProduct);
                 });
+    }
+
+    public List<Product> getFilteredProducts(String name, String category, BigDecimal minPrice, BigDecimal maxPrice) {
+        return productRepository.findAll(ProductSpecification.filterBy(name, category, minPrice, maxPrice));
     }
 }
 

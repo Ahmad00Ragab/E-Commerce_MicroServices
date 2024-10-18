@@ -185,6 +185,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.springframework.stereotype.Component;
 
 
 @Entity
@@ -213,6 +214,14 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonIgnore // Prevent circular reference
     private List<Order> orders;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_category",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private Set<Category> categories;
 
     @PrePersist
     protected void onCreate() {

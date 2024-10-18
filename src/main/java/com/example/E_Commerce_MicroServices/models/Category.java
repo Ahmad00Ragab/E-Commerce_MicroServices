@@ -1,16 +1,16 @@
 package com.example.E_Commerce_MicroServices.models;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "category")
+@Table(name = "category")  // Adjusted table name to lowercase
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,10 +22,27 @@ public class Category {
     @Column(nullable = false)
     private String name;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "date_created", nullable = false)
     private LocalDateTime dateCreated;
 
+    @Column(name = "last_updated", nullable = false)
+    private LocalDateTime lastUpdated;
+
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+    private Set<User> users = new HashSet<>();  // Initialized directly
+
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    @JsonManagedReference // Manage serialization of products
-    private Set<Product> products = new HashSet<>();
+    private Set<Product> products = new HashSet<>();  // Initialized directly
+
+    public Category(String name, LocalDateTime dateCreated, LocalDateTime lastUpdated) {
+        this.name = name;
+        this.dateCreated = dateCreated;
+        this.lastUpdated = lastUpdated;
+    }
 }

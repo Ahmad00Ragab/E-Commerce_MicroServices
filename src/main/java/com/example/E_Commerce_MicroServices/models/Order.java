@@ -1,5 +1,6 @@
 package com.example.E_Commerce_MicroServices.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,6 +25,7 @@ public class Order {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     @Column(name = "total_price", nullable = false)
@@ -36,6 +38,7 @@ public class Order {
     // @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     // @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY) /* when adding the order, add with it the order items, in order_items table */
+    @JsonIgnore
     private Set<OrderItem> orderItems = new HashSet<>();
 
     public Order(User user, BigDecimal totalPrice, LocalDateTime dateCreated) {
