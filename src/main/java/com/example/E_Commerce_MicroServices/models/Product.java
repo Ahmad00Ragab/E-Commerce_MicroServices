@@ -99,21 +99,6 @@ public class Product {
     }
 
 
-    public Product(String name, BigDecimal price, int stock, String categoryId) {
-        this.name = name;
-        this.price = price;
-        this.stock = stock;
-        this.dateCreated = LocalDateTime.now();
-        this.lastUpdated = LocalDateTime.now();
-        this.cart = new HashSet<>();
-
-
-        Long categoryIdLong = Long.parseLong(categoryId);
-        this.category = CategoryRepository.findById(categoryIdLong)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid category ID: " + categoryId));
-        } 
-    
-
 
     /* Constructor that accepts categoryId as a String */
     public Product(String name, BigDecimal price, int stock, Category category) {
