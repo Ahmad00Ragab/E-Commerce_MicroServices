@@ -1,11 +1,7 @@
 package com.example.E_Commerce_MicroServices.models;
 
-//import gov.iti.jets.system.utils.verification.EmailStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,34 +26,40 @@ public class User {
     private Long id;
 
     @Column(name = "username", nullable = false, unique = true)
+    @NotEmpty(message = "Username is required")
     @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
     private String username;
 
     @Column(name = "password", nullable = false)
-    @Size(min = 8, message = "Password must be at least 8 characters long")
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$",
-            message = "Password must contain at least one letter and one number")
+    @NotEmpty(message = "Password is required")
+    @Size(min = 6, message = "Password must be at least 6 characters long")
     private String password;
 
     @Column(name = "firstname")
+    @Size(max = 50, message = "First name must be less than 50 characters")
     private String firstName;
 
     @Column(name = "lastname")
+    @Size(max = 50, message = "Last name must be less than 50 characters")
     private String lastName;
 
     @Column(name = "email", unique = true, nullable = false)
-    @Email
+    @NotEmpty(message = "Email is required")
+    @Email(message = "Invalid email format")
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
-            message = "Email must be from gmail.com or outlook.com")
+            message = "Email must follow correct format (e.g., user@domain.com)")
     private String email;
 
     @Column(name = "country")
+    @Size(max = 100, message = "Country must be less than 100 characters")
     private String country;
 
     @Column(name = "city")
+    @Size(max = 100, message = "City must be less than 100 characters")
     private String city;
 
     @Column(name = "street")
+    @Size(max = 150, message = "Street must be less than 150 characters")
     private String street;
 
     @Column(name = "credit_limit")
@@ -65,9 +67,11 @@ public class User {
     private BigDecimal creditLimit;
 
     @Column(name = "birthdate")
+    @Past(message = "Birthdate must be in the past")
     private LocalDate birthdate;
 
     @Column(name="phone")
+    @Pattern(regexp = "^\\+?[0-9]{10,15}$", message = "Phone number must be between 10 and 15 digits, and may include a leading + for international numbers.")
     private String phone;
 
     @Column(name= "date_created", nullable = false)

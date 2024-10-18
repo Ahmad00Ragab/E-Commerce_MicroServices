@@ -1,12 +1,10 @@
 package com.example.E_Commerce_MicroServices.models;
 
-import com.example.E_Commerce_MicroServices.repositories.CategoryRepository;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -98,24 +96,6 @@ public class Product {
         cart=new HashSet<>();
     }
 
-
-    public Product(String name, BigDecimal price, int stock, String categoryId) {
-        this.name = name;
-        this.price = price;
-        this.stock = stock;
-        this.dateCreated = LocalDateTime.now();
-        this.lastUpdated = LocalDateTime.now();
-        this.cart = new HashSet<>();
-
-
-        Long categoryIdLong = Long.parseLong(categoryId);
-        this.category = CategoryRepository.findById(categoryIdLong)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid category ID: " + categoryId));
-        } 
-    
-
-
-    /* Constructor that accepts categoryId as a String */
     public Product(String name, BigDecimal price, int stock, Category category) {
         this.name        = name;
         this.price       = price;

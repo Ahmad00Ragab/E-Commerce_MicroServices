@@ -44,11 +44,11 @@ public class CartItem {
         this.cartId.setProductId(product.getId());
     }
 
-    public CartItem(Long userId, Long productId, Long quantity) {
+    public CartItem(Long userId, Long productId, int quantity) {
         this.cartId = new CartKey();
         this.cartId.setUserId(userId);
         this.cartId.setProductId(productId);
-        this.quantity = quantity.intValue();
+        this.quantity = quantity;
     }
 
     public CartItem(Long userId, Long productId) {
