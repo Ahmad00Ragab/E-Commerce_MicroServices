@@ -1,5 +1,7 @@
 package com.example.E_Commerce_MicroServices.services;
 
+
+
 import com.example.E_Commerce_MicroServices.models.CartItem;
 import com.example.E_Commerce_MicroServices.models.CartKey;
 import com.example.E_Commerce_MicroServices.models.Product;
@@ -7,7 +9,9 @@ import com.example.E_Commerce_MicroServices.models.User;
 import com.example.E_Commerce_MicroServices.repositories.CartItemRepository;
 import com.example.E_Commerce_MicroServices.repositories.ProductRepository;
 import com.example.E_Commerce_MicroServices.repositories.UserRepository;
+import com.example.E_Commerce_MicroServices.services.dtos.AddToCartRequest;
 import com.example.E_Commerce_MicroServices.system.exceptions.ObjectNotFoundException;
+import com.example.E_Commerce_MicroServices.system.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,18 +51,17 @@ public class CartService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ObjectNotFoundException("Product", productId));
 
-        if(product.getStock() == 0) {
+        if (product.getStock() == 0) {
             throw new ObjectNotFoundException("Product", productId);
         }
 
         Optional<CartItem> existingCartItem = cartItemRepository.findByUserId(userId).stream().filter(cartItem -> cartItem.getProduct().getId().equals(productId)).findFirst();
 
-        if(existingCartItem.isPresent()) {
+        if (existingCartItem.isPresent()) {
             CartItem cartItem = existingCartItem.get();
             cartItem.setQuantity(cartItem.getQuantity() + quantity);
             cartItemRepository.save(cartItem);
-        }
-        else{
+        } else {
             CartItem cartItem = new CartItem(userId, productId, quantity);
             cartItemRepository.save(cartItem);
         }
@@ -69,7 +72,7 @@ public class CartService {
         if (quantity < 0) {
             throw new IllegalArgumentException("Quantity must be greater than 0");
         }
-        if(quantity == 0) {
+        if (quantity == 0) {
             cartItemRepository.deleteById(new CartKey(userId, productId));
         }
 
@@ -101,5 +104,38 @@ public class CartService {
     public CartItem findCartItem(Long userId, Long productId) {
         return cartItemRepository.findById(new CartKey(userId, productId))
                 .orElseThrow(() -> new ObjectNotFoundException("Cart item", new CartKey(userId, productId)));
+    }
+
+    public List<CartItem> getProductsInUserCart(Long userId) {
+        Optional<User> userOpt=userRepository.findById(userId);
+        if(userOpt.isPresent()){
+          return cartItemRepository.findByUserId(userId);
+        }
+        else {
+            throw new UserNotFoundException();
+        }
+    }
+
+
+    public CartItem addProductToCart(AddToCartRequest request) {
+        User user = userRepository.findById(request.userId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Product product = productRepository.findById(request.productId())
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        Optional<CartItem> existingCartItem = cartItemRepository.findByUserIdAndProductId(request.userId(), request.productId());
+
+        CartItem cartItem;
+        if (existingCartItem.isPresent()) {
+            cartItem = existingCartItem.get();
+            cartItem.setQuantity(cartItem.getQuantity() + request.quantity());
+        } else {
+            cartItem = new CartItem();
+            cartItem.setUser(user);
+            cartItem.setProduct(product);
+            cartItem.setQuantity(request.quantity());
+        }
+
+        return cartItemRepository.save(cartItem);
     }
 }
